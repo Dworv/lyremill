@@ -9,6 +9,9 @@ impl Plugin for PlayerPlugin {
     }
 }
 
+#[derive(Resource)]
+pub struct DeltaMovement(f32);
+
 #[derive(Component)]
 pub struct Player {
     pub speed: f64,
@@ -16,6 +19,7 @@ pub struct Player {
 }
 
 fn setup_player(mut commands: Commands, asset_server: Res<AssetServer>) {
+    commands.insert_resource(DeltaMovement(5.));
     commands.spawn((
         SpriteBundle {
             texture: asset_server.load("textures/plane.png"),

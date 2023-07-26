@@ -1,7 +1,7 @@
 use std::time::Duration;
 
 use bevy::{asset::ChangeWatcher, prelude::*};
-use parascape::PlayerPlugin;
+use parascape::{PlayerPlugin, ObstaclePlugin};
 
 fn main() {
     App::new()
@@ -13,6 +13,7 @@ fn main() {
                     ..default()
                 }),
             PlayerPlugin,
+            ObstaclePlugin
         ))
         .add_systems(Startup, setup_game)
         .run();
