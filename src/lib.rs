@@ -1,5 +1,2 @@
-mod player;
-mod obstacle;
-
-pub use obstacle::ObstaclePlugin;
-pub use player::PlayerPlugin;
+pub mod player;
+pub mod obstacle;
