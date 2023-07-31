@@ -64,7 +64,8 @@ pub fn calculate_speed(
     mut query: Query<&mut Player>,
 ) {
     let mut player = query.get_single_mut().unwrap();
-    player.speed += (player_actions.thrust.x * ACCEL * time.delta_seconds()).min(1.).max(0.);
+    let speed_change = player_actions.thrust.x * ACCEL * time.delta_seconds();
+    player.speed = (player.speed + speed_change).min(1.).max(0.);
     movement.x = MIN_SPEED + player.speed * (MAX_SPEED - MIN_SPEED);
     println!("{}", movement.x);
 }
