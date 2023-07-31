@@ -1,18 +1,12 @@
 use bevy::prelude::*;
 use rand::{thread_rng, Rng};
 
-pub struct ObstaclePlugin;
-
-impl Plugin for ObstaclePlugin {
-    fn build(&self, app: &mut App) {
-        app.add_systems(Update, (add_obstacles, move_obstacles));
-    }
-}
+use crate::player::DeltaMovement;
 
 #[derive(Component)]
 pub struct Obstacle;
 
-fn add_obstacles(mut commands: Commands, asset_server: Res<AssetServer>) {
+pub fn add(mut commands: Commands, asset_server: Res<AssetServer>) {
     if thread_rng().gen_ratio(1, 100) {
         commands.spawn((
             Obstacle,
@@ -25,11 +19,12 @@ fn add_obstacles(mut commands: Commands, asset_server: Res<AssetServer>) {
                 ..default()
             }
         ));
+        println!("added")
     }
 }
 
-fn move_obstacles(mut query: Query<(&mut Obstacle, &mut Transform)>) {
+pub fn shift(mut query: Query<(&mut Obstacle, &mut Transform)>, movement: Res<DeltaMovement>, time: Res<Time>) {
     for (_, mut t) in &mut query {
-        t.translation.x -= 10.;
+        t.translation -= **movement * time.delta_seconds();
     }
 }

@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-#[derive(Deref, DerefMut, Resource)]
+#[derive(Default, Deref, DerefMut, Resource)]
 pub struct DeltaMovement(Vec3);
 
 #[derive(Default, Resource)]
@@ -16,6 +16,8 @@ pub struct Player {
 }
 
 pub fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
+    commands.insert_resource(DeltaMovement::default());
+    commands.insert_resource(Actions::default());
     commands.spawn((
         SpriteBundle {
             texture: asset_server.load("textures/plane.png"),
@@ -62,6 +64,7 @@ pub fn calculate_speed(
     mut query: Query<&mut Player>,
 ) {
     let mut player = query.get_single_mut().unwrap();
-    player.speed += (player_actions.thrust.x * ACCEL * time.delta_seconds()).min(0.).max(1.);
+    player.speed += (player_actions.thrust.x * ACCEL * time.delta_seconds()).min(1.).max(0.);
     movement.x = MIN_SPEED + player.speed * (MAX_SPEED - MIN_SPEED);
+    println!("{}", movement.x);
 }
