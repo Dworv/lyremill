@@ -16,7 +16,10 @@ fn main() {
         .add_systems(Startup, (setup_game, player::setup))
         .add_systems(Update, (
             player::read_actions, 
-            player::calculate_speed,
+            (
+                player::calculate_x_movement,
+                player::adjust_rotation
+            ),
             (obstacle::add, obstacle::shift)
         ).chain())
         .run();
