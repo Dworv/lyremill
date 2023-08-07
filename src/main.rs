@@ -1,8 +1,10 @@
 use std::time::Duration;
 
-use bevy::{asset::ChangeWatcher, prelude::*, render::camera::ScalingMode, ecs::schedule::ScheduleLabel};
+use bevy::{
+    asset::ChangeWatcher, prelude::*, render::camera::ScalingMode, window::WindowResolution,
+};
 
-use parascape::GameState;
+use lyremill::{gen, GameState};
 
 fn main() {
     App::new()
@@ -14,21 +16,20 @@ fn main() {
                     ..default()
                 })
                 .set(ImagePlugin::default_nearest())
-            )
-        .add_systems(Startup, setup_game)
+                .set(WindowPlugin {
+                    primary_window: Some(Window {
+                        resolution: WindowResolution::new(1000., 1000.),
+                        ..default()
+                    }),
+                    ..default()
+                }),
+        )
+        .add_systems(Startup, setup_camera)
+        .add_systems(OnEnter(GameState::Generating), gen::grass)
         .run();
 }
 
-fn setup_game(mut commands: Commands, assets: Res<AssetServer>) {
-    let handle = assets.load("textures/buildings/windmill.png");
-    commands.spawn(SpriteBundle {
-        texture: handle,
-        sprite: Sprite {
-            custom_size: Some(Vec2::new(1., 1.)),
-            ..default()
-        },
-        ..default()
-    });
+fn setup_camera(mut commands: Commands) {
     commands.spawn(Camera2dBundle {
         projection: OrthographicProjection {
             scaling_mode: ScalingMode::FixedVertical(16.),
