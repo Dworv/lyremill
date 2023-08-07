@@ -1,2 +1,2 @@
 # Lyremill
-A rapid, scrolling jet-shooter
+A 1-4 player fixed-location PVE game.

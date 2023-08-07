@@ -1,5 +1,5 @@
 [package]
-name = "parascape"
+name = "lyremill"
 version = "0.1.0"
 edition = "2021"
 
@@ -7,4 +7,5 @@ edition = "2021"
 
 [dependencies]
 bevy = "0.11.0"
+tilemap = { package = "bevy_simple_tilemap", version = "0.12.0" }
 rand = "0.8.5"
